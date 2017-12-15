@@ -11,7 +11,7 @@ namespace Algorithms
         static void Main(string[] args)
         {
             Console.WriteLine(Karatsuba.Karatsuba.PROD(2512, 11414));
-            CatRest catRest = Karatsuba.Karatsuba.DIV(554, 123);
+            CatRest catRest = Karatsuba.Karatsuba.DIV(532441123, 9988);
             Console.WriteLine("Cat:{0} Rest:{1}", catRest.Cat,catRest.Rest);
             Console.ReadKey();
         }

@@ -95,10 +95,40 @@ namespace Algorithms.Karatsuba
                 }
             }
 
-            if(N > M)
+            if (N > M)
             {
+                List<long> y = new List<long>();
+                long l = (long)(Math.Floor(Math.Pow(10, M) / m));
+
+                if (Math.Pow(10, M) / m - Math.Floor(Math.Pow(10, M) / m) <= 1 / 2)
+                    y.Add((long)(Math.Pow(10, N - M) * Math.Floor(Math.Pow(10, M) / m)));
+                else
+                    y.Add((long)(Math.Pow(10, N - M) * (Math.Floor(Math.Pow(10, M) / m) + 1)));
+
+                while (true)
+                {
+                    y.Add((long)(2 * y[y.Count-1] - Math.Floor(m / Math.Pow(10, M) * Math.Floor(Math.Pow(y[y.Count-1], 2) / Math.Pow(10, N - M)))));
+                    if (y[y.Count-1] <= y[y.Count-2])
+                    {
+                        break;
+                    }
+                }
+
+                long k;
+
+                foreach(long val in y)
+                {
+                    if (Karatsuba.PROD(m, l) == val)
+                    {
+                        k = val;
+                        break;
+                    }
+                }
+
+
 
             }
+
 
 
 

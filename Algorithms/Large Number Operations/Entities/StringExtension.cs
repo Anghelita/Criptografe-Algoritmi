@@ -17,5 +17,10 @@ namespace Algorithms
         {
             return new StringArithmetics(str.ToString());
         }
+
+        public static StringArithmetics ToStringArithmetics(this long str)
+        {
+            return new StringArithmetics(str.ToString());
+        }
     }
 }

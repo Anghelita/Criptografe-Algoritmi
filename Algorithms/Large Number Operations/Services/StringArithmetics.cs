@@ -75,6 +75,23 @@ namespace Algorithms
             {
                 StringArithmetics b = n as StringArithmetics;
 
+                string pattern = "^0*";
+                string replacement = "";
+                Regex rgx = new Regex(pattern);
+                a.Operand = rgx.Replace(a.Operand, replacement);
+                b.Operand = rgx.Replace(b.Operand, replacement);
+
+                if (a.Operand.Length == 0)
+                {
+                    a.Operand = "0";
+                }
+
+
+                if (b.Operand.Length == 0)
+                {
+                    b.Operand = "0";
+                }
+
                 // a si b au acelas semn
 
                 if (a.Operand[0].Equals('-') && !b.Operand[0].Equals('-'))
@@ -139,10 +156,29 @@ namespace Algorithms
             if (n is StringArithmetics)
             {
                 StringArithmetics b = n as StringArithmetics;
+
+
                 if (a.Operand[0].Equals('-') && !b.Operand[0].Equals('-'))
                     return false;
                 if (!a.Operand[0].Equals('-') && b.Operand[0].Equals('-'))
                     return false;
+
+                string pattern = "^0*";
+                string replacement = "";
+                Regex rgx = new Regex(pattern);
+                a.Operand = rgx.Replace(a.Operand, replacement);
+                b.Operand = rgx.Replace(b.Operand, replacement);
+
+                if (a.Operand.Length == 0)
+                {
+                    a.Operand = "0";
+                }
+
+
+                if (b.Operand.Length == 0)
+                {
+                    b.Operand = "0";
+                }
 
                 if (a.Operand.Length != b.Operand.Length)
                     return false;
@@ -391,8 +427,9 @@ namespace Algorithms
             return 0.ToStringArithmetics() - a;
         }
 
-        public static StringArithmetics operator *(StringArithmetics a, Object z)
+        public static StringArithmetics operator *(StringArithmetics q, Object z)
         {
+            StringArithmetics a = new StringArithmetics(q.Operand);
             if (z is int)
             {
                 StringArithmetics b = (Convert.ToInt32(z)).ToStringArithmetics();
@@ -401,17 +438,17 @@ namespace Algorithms
             if (z is StringArithmetics)
             {
                 StringArithmetics b = new StringArithmetics( (z as StringArithmetics).Operand);
+
+
                 string pattern = "^0*";
                 string replacement = "";
                 Regex rgx = new Regex(pattern);
-                a.Operand = rgx.Replace(a.Operand, replacement);
 
                 if (a.Operand.Length == 0)
                 {
                     a.Operand = "0";
                 }
 
-                b.Operand = rgx.Replace(b.Operand, replacement);
 
                 if (b.Operand.Length == 0)
                 {
@@ -498,17 +535,27 @@ namespace Algorithms
             if (n is int)
             {
                 StringArithmetics b = (Convert.ToInt32(n)).ToStringArithmetics();
-                return a - b;
+                return a ^ b;
             }
             if (n is StringArithmetics)
             {
-                StringArithmetics b = n as StringArithmetics;
-                StringArithmetics Power = new StringArithmetics(a.Operand);
-                for (int i = 1; i.ToStringArithmetics() < b; i++)
+                StringArithmetics l = StringArithmetics.ToBinary(n as StringArithmetics);
+
+                StringArithmetics z = new StringArithmetics("1");
+
+                for (int i = 0; i < l.Operand.Length; i = i + 1)
                 {
-                    Power = Power * a;
+                    if (l.Operand[i].Equals('1'))
+                    {
+                        z = z * z * a;
+                    }
+                    else
+                    {
+                        z = z * z;
+                    }
                 }
-                return Power;
+
+                return z;
             }
             return new StringArithmetics("0");
         }
@@ -522,7 +569,25 @@ namespace Algorithms
             }
             if (n is StringArithmetics)
             {
-                StringArithmetics b = n as StringArithmetics;
+                StringArithmetics b = new StringArithmetics(( n as StringArithmetics).Operand);
+
+                string pattern = "^0*";
+                string replacement = "";
+                Regex rgx = new Regex(pattern);
+                a.Operand = rgx.Replace(a.Operand, replacement);
+                b.Operand = rgx.Replace(b.Operand, replacement);
+
+                if (a.Operand.Length == 0)
+                {
+                    a.Operand = "0";
+                }
+
+
+                if (b.Operand.Length == 0)
+                {
+                    b.Operand = "0";
+                }
+
                 if (a == 0)
                 {
                     return new CatRest("0", "0");
@@ -640,7 +705,7 @@ namespace Algorithms
             return new CatRest("0", "0"); ;
         }
 
-        public static StringArithmetics Sqrt(StringArithmetics a)
+        public static StringArithmetics Sqrt(StringArithmetics a, StringArithmetics b)
         {
 
             if(a ==0 || a == 1)
@@ -648,32 +713,53 @@ namespace Algorithms
                 return new StringArithmetics(a.Operand);
             }
 
-            double da = Convert.ToInt32(a.Operand);
-            double l = Math.Floor(Math.Log(da, 10));
-            List<double> y = new List<double>();
 
-            y.Add(Math.Pow(2, Math.Ceiling(a.Operand.Length / l)));
+            List<StringArithmetics> y = new List<StringArithmetics>();
+
+            y.Add(2.ToStringArithmetics() ^(b * a.Operand.Length));
 
             int i = 0;
 
             do
             {
-                y.Add(Math.Floor((1 / l) * ((l - 1) * y[i] + Math.Floor(da / Math.Pow(y[i],(l - 1))))));
+                StringArithmetics q1 = Floor(a / (y[i] ^ (b - 1)));
+                StringArithmetics q2 = (b - 1) * y[i] + q1;
+
+                y.Add(Floor(q2/ b));
                 i++;
-            } while (y[i] < y[i - 1]) ;
+            } while (y[i] < y[i - 1]);
 
-            double check = Math.Floor(Math.Pow(da, 1 / l));
+            StringArithmetics sol = y[i -1];
 
-            int j = 1;
+            int j = 0;
+
             while(true)
             {
-                if(y[i-1]*j==check)
+                if ( ((sol+j)^b) > a )
                 {
-                    return new StringArithmetics(j.ToString());
+                    break;
                 }
                 j++;
-            };
+            }
 
+            return sol + j - 1;
+        }
+
+        public static StringArithmetics ToBinary(StringArithmetics a)
+        {
+            StringArithmetics bin = new StringArithmetics("");
+            while(a!=0)
+            {
+                CatRest catRest = a / 2;
+                bin.Operand += catRest.Rest.Operand;
+                a = catRest.Cat;
+            }
+
+            char[] charArray = bin.Operand.ToCharArray();
+            Array.Reverse(charArray);
+            bin.Operand = new String(charArray);
+
+            return bin;
         }
 
     }

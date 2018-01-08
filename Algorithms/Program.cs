@@ -15,7 +15,7 @@ namespace Algorithms
             while (true)
             {
                 StringArithmetics a, b;
-                a = new StringArithmetics(Console.ReadLine().ToString());
+                //a = new StringArithmetics(Console.ReadLine().ToString());
                 //b = new StringArithmetics(Console.ReadLine().ToString());
 
                 // CatRest c = a / b;
@@ -30,7 +30,9 @@ namespace Algorithms
                 //Console.WriteLine(a<=b);
                 //Console.WriteLine(a.Operand+"" +b.Operand);
 
-                //Console.WriteLine((25.ToStringArithmetics()/2).Cat.Operand);
+                //Console.WriteLine((1212.ToStringArithmetics()/154).Cat.Operand);
+
+                Console.WriteLine((1212.ToStringArithmetics() / 154).Cat.Operand);
 
                 //Console.Write((5.ToStringArithmetics()^25).Operand);
                 break;

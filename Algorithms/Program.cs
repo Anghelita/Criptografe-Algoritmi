@@ -32,9 +32,11 @@ namespace Algorithms
 
                 //Console.WriteLine((1212.ToStringArithmetics()/154).Cat.Operand);
 
-                Console.WriteLine((1212.ToStringArithmetics() / 154).Cat.Operand);
+                //Console.WriteLine(PrimalTest.Parrat(31.ToStringArithmetics()));
 
                 //Console.Write((5.ToStringArithmetics()^25).Operand);
+
+                Console.Write(StringArithmetics.Cmmdc(25.ToStringArithmetics(),3.ToStringArithmetics()).Operand);
                 break;
 
             }

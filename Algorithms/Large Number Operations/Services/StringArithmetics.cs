@@ -762,5 +762,25 @@ namespace Algorithms
             return bin;
         }
 
+        public static StringArithmetics Cmmdc(StringArithmetics a, StringArithmetics b)
+        {
+            if (a == 0)
+                return b;
+            while(b!=0)
+            {
+                if (a > b)
+                    a = a - b;
+                else
+                    b = b - a;
+            }
+
+            return a;
+        }
+
+        public static bool Congruent(StringArithmetics a, StringArithmetics b, StringArithmetics Z)
+        {
+            return (a / Z).Rest == b;
+        }
+
     }
 }

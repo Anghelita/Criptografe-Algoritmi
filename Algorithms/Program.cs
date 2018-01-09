@@ -1,5 +1,6 @@
 ﻿using Algorithms.Large_Number_Operations;
 using Algorithms.Prtimal_Tests;
+using Algorithms.Crypt;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,20 @@ namespace Algorithms
                 //Console.Write(StringArithmetics.Cmmdc(-25.ToStringArithmetics(),3.ToStringArithmetics()).Operand);
 
                 //Console.Write(StringArithmetics.Pollard(10201.ToStringArithmetics()).Operand);
+
+                //String txt = "Ana are mere!";
+                //int shift = 121554;
+
+                //String cry = Crypt.Crypt.CaesarCrypt(txt, shift);
+                //String decry =Crypt.Crypt.CaesarDeCrypt(cry, shift);
+
+                //Console.WriteLine(cry);
+                //Console.WriteLine(decry);
+
+
+
+
+
 
                 break;
 

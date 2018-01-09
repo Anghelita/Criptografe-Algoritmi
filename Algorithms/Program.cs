@@ -21,7 +21,7 @@ namespace Algorithms
                 // CatRest c = a / b;
 
                 //Console.WriteLine(c.Cat.Operand + " " + c.Rest.Operand);
-                //Console.WriteLine(StringArithmetics.Sqrt(a,3.ToStringArithmetics()).Operand);
+                //Console.WriteLine(StringArithmetics.Sqrt(125.ToStringArithmetics(),2.ToStringArithmetics()).Operand);
                 //Console.WriteLine((a - b).Operand);
                 //break;
 
@@ -36,7 +36,18 @@ namespace Algorithms
 
                 //Console.Write((5.ToStringArithmetics()^25).Operand);
 
-                Console.Write(StringArithmetics.Cmmdc(25.ToStringArithmetics(),3.ToStringArithmetics()).Operand);
+                //Console.Write((-1.ToStringArithmetics()/ 2.ToStringArithmetics()).Cat.Operand);
+
+                // int i = 2;
+
+                //Console.Write(i & 1);
+
+                //Console.Write(StringArithmetics.RadacinaModulara(5.ToStringArithmetics(), 41.ToStringArithmetics()).Operand);
+
+                //Console.Write(StringArithmetics.Cmmdc(-25.ToStringArithmetics(),3.ToStringArithmetics()).Operand);
+
+                Console.Write(StringArithmetics.Pollard(10201.ToStringArithmetics()).Operand);
+
                 break;
 
             }

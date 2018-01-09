@@ -34,7 +34,6 @@ namespace Algorithms
             }
             return b;
         }
-
         public static StringArithmetics Floor(CatRest a)
         {
             return new StringArithmetics(a.Cat.Operand);
@@ -46,6 +45,165 @@ namespace Algorithms
                 return new StringArithmetics((a.Cat +1).Operand);
             }
             return new StringArithmetics(a.Cat.Operand);
+        }
+        //vezi daca tai sau nu chestia cu b ca merge nuai cu 2
+        public static StringArithmetics Sqrt(StringArithmetics a, StringArithmetics b)
+        {
+
+            if (a == 0 || a == 1)
+            {
+                return new StringArithmetics(a.Operand);
+            }
+
+
+            List<StringArithmetics> y = new List<StringArithmetics>();
+
+            y.Add(2.ToStringArithmetics() ^ (b * a.Operand.Length));
+
+            int i = 0;
+
+            do
+            {
+                StringArithmetics q1 = Floor(a / (y[i] ^ (b - 1)));
+                StringArithmetics q2 = (b - 1) * y[i] + q1;
+
+                y.Add(Floor(q2 / b));
+                i++;
+            } while (y[i] < y[i - 1]);
+
+            StringArithmetics sol = y[i - 1];
+
+            int j = 0;
+
+            while (true)
+            {
+                if (((sol + j) ^ b) > a)
+                {
+                    break;
+                }
+                j++;
+            }
+
+            return sol + j - 1;
+        }
+        public static StringArithmetics ToBinary(StringArithmetics a)
+        {
+            StringArithmetics bin = new StringArithmetics("");
+            while (a != 0)
+            {
+                CatRest catRest = a / 2;
+                bin.Operand += catRest.Rest.Operand;
+                a = catRest.Cat;
+            }
+
+            char[] charArray = bin.Operand.ToCharArray();
+            Array.Reverse(charArray);
+            bin.Operand = new String(charArray);
+
+            return bin;
+        }
+        public static StringArithmetics Cmmdc(StringArithmetics a, StringArithmetics b)
+        {
+            if (a == 0)
+                return b;
+            while (b != 0)
+            {
+                if (a > b)
+                    a = a - b;
+                else
+                    b = b - a;
+            }
+
+            return a;
+        }
+        public static bool Congruent(StringArithmetics a, StringArithmetics b, StringArithmetics Z)
+        {
+            if (a < b)
+                return (a / Z).Rest == b;
+            return ((a - b) / Z).Rest == 0;
+        }
+        public static StringArithmetics PowerMod(StringArithmetics a, StringArithmetics n, StringArithmetics p)
+        {
+            if (n == 0)
+                return 1.ToStringArithmetics();
+            if ((n / 2).Rest == 1)
+                return ((PowerMod(a, n - 1, p) * a) / p).Rest;
+            if (n > 0)
+                a = PowerMod(a, (n / 2).Cat, p);
+            else
+                a = PowerMod(a, (n / 2).Cat + 1, p);
+
+            return ((a * a) / p).Rest;
+        }
+        public static StringArithmetics RadacinaModulara(StringArithmetics a, StringArithmetics p)
+        {
+            StringArithmetics s = new StringArithmetics("0");
+
+            StringArithmetics q = p - 1;
+
+            while ((q / 2).Rest == 0)
+            {
+                q = (q / 2).Cat;
+                ++s;
+            }
+            if (s == 1)
+            {
+                StringArithmetics rt = PowerMod(a, ((p + 1) / 4).Cat, p);
+                if (((rt * rt) / p).Rest == a) return rt;
+                return 0.ToStringArithmetics();
+            }
+
+            StringArithmetics z = 1.ToStringArithmetics();
+
+            while (PowerMod(++z, ((p - 1) / 2).Cat, p) != p - 1) ;
+
+            StringArithmetics c = PowerMod(z, q, p);
+            StringArithmetics r = PowerMod(a, ((q + 1) / 2).Cat, p);
+            StringArithmetics t = PowerMod(a, q, p);
+
+            StringArithmetics m = new StringArithmetics(s.Operand);
+
+            while (t != 1)
+            {
+                StringArithmetics tt = new StringArithmetics(t.Operand);
+                StringArithmetics i = 0.ToStringArithmetics();
+                while (tt != 1)
+                {
+                    tt = ((tt * tt) / p).Rest;
+                    if (i == m) return 0.ToStringArithmetics();
+                    ++i;
+                }
+                StringArithmetics b = PowerMod(c, PowerMod(2.ToStringArithmetics(), m - i - 1, p - 1), p);
+                StringArithmetics b2 = ((b * b) / p).Rest;
+                r = ((r * b) / p).Rest;
+                t = ((t * b2) / p).Rest;
+                c = b2;
+                m = i;
+            }
+            if (((r * r) / p).Rest == a) return r;
+            return 0.ToStringArithmetics();
+        }
+
+        private static StringArithmetics PollardAux(StringArithmetics x, StringArithmetics n)
+        {
+            return (((x ^ 2) - 1) / n).Rest;
+        }
+        // E ceva putin gresit dat nu stiu ce.. E de vazut!!!
+        public static StringArithmetics Pollard(StringArithmetics n)
+        {
+            StringArithmetics x = 2.ToStringArithmetics();
+            StringArithmetics y = 2.ToStringArithmetics();
+            StringArithmetics d = 1.ToStringArithmetics();
+            while(d == 1)
+            {
+                x = PollardAux(x, n);
+                y = PollardAux(PollardAux(y, n), n);
+                d = Cmmdc(Abs(x - y), n);
+            }
+            if (d == n)
+                return -1.ToStringArithmetics();
+            else
+                return d;
         }
 
         public static bool operator >(StringArithmetics a, Object n)
@@ -324,6 +482,10 @@ namespace Algorithms
             }
             return new StringArithmetics("0");
         }
+        public static StringArithmetics operator ++(StringArithmetics a)
+        {
+            return a + 1;
+        }
 
         public static StringArithmetics operator -(StringArithmetics a, Object n)
         {
@@ -420,6 +582,10 @@ namespace Algorithms
                 return new StringArithmetics(result);
             }
             return new StringArithmetics("0");
+        }
+        public static StringArithmetics operator --(StringArithmetics a)
+        {
+            return a - 1;
         }
 
         public static StringArithmetics operator -(StringArithmetics a)
@@ -539,7 +705,11 @@ namespace Algorithms
             }
             if (n is StringArithmetics)
             {
+                if ((n as StringArithmetics) < 0)
+                    return new StringArithmetics("-1");
+
                 StringArithmetics l = StringArithmetics.ToBinary(n as StringArithmetics);
+
 
                 StringArithmetics z = new StringArithmetics("1");
 
@@ -703,83 +873,6 @@ namespace Algorithms
                 return new CatRest("0", "0"); ;
             }
             return new CatRest("0", "0"); ;
-        }
-
-        public static StringArithmetics Sqrt(StringArithmetics a, StringArithmetics b)
-        {
-
-            if(a ==0 || a == 1)
-            {
-                return new StringArithmetics(a.Operand);
-            }
-
-
-            List<StringArithmetics> y = new List<StringArithmetics>();
-
-            y.Add(2.ToStringArithmetics() ^(b * a.Operand.Length));
-
-            int i = 0;
-
-            do
-            {
-                StringArithmetics q1 = Floor(a / (y[i] ^ (b - 1)));
-                StringArithmetics q2 = (b - 1) * y[i] + q1;
-
-                y.Add(Floor(q2/ b));
-                i++;
-            } while (y[i] < y[i - 1]);
-
-            StringArithmetics sol = y[i -1];
-
-            int j = 0;
-
-            while(true)
-            {
-                if ( ((sol+j)^b) > a )
-                {
-                    break;
-                }
-                j++;
-            }
-
-            return sol + j - 1;
-        }
-
-        public static StringArithmetics ToBinary(StringArithmetics a)
-        {
-            StringArithmetics bin = new StringArithmetics("");
-            while(a!=0)
-            {
-                CatRest catRest = a / 2;
-                bin.Operand += catRest.Rest.Operand;
-                a = catRest.Cat;
-            }
-
-            char[] charArray = bin.Operand.ToCharArray();
-            Array.Reverse(charArray);
-            bin.Operand = new String(charArray);
-
-            return bin;
-        }
-
-        public static StringArithmetics Cmmdc(StringArithmetics a, StringArithmetics b)
-        {
-            if (a == 0)
-                return b;
-            while(b!=0)
-            {
-                if (a > b)
-                    a = a - b;
-                else
-                    b = b - a;
-            }
-
-            return a;
-        }
-
-        public static bool Congruent(StringArithmetics a, StringArithmetics b, StringArithmetics Z)
-        {
-            return (a / Z).Rest == b;
         }
 
     }

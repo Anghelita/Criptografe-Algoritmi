@@ -46,7 +46,7 @@ namespace Algorithms
 
                 //Console.Write(StringArithmetics.Cmmdc(-25.ToStringArithmetics(),3.ToStringArithmetics()).Operand);
 
-                Console.Write(StringArithmetics.Pollard(10201.ToStringArithmetics()).Operand);
+                //Console.Write(StringArithmetics.Pollard(10201.ToStringArithmetics()).Operand);
 
                 break;
 
